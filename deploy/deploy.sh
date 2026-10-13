@@ -19,10 +19,14 @@ echo "1. Building the code locally..."
 ./mvnw clean package -DskipTests
 
 echo "2. Copying code to server..."
-scp -i "$KEY" -o StrictHostKeyChecking=no target/*.jar ubuntu@$HOST:/opt/taskmaster/
+scp -i "$KEY" -o StrictHostKeyChecking=no -o ServerAliveInterval=15 -o ServerAliveCountMax=3 target/*.jar ubuntu@$HOST:/opt/taskmaster/
+scp -i "$KEY" -o StrictHostKeyChecking=no -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -r deploy ubuntu@$HOST:/opt/taskmaster/
 
 echo "3. Restarting service..."
-ssh -i "$KEY" -o StrictHostKeyChecking=no ubuntu@$HOST << 'EOF'
+ssh -i "$KEY" -o StrictHostKeyChecking=no -o ServerAliveInterval=15 -o ServerAliveCountMax=3 ubuntu@$HOST << 'EOF'
+    echo "Updating systemd file..."
+    sudo cp /opt/taskmaster/deploy/taskmaster.service /etc/systemd/system/ || true
+    sudo systemctl daemon-reload
     echo "Restarting taskmaster service..."
     sudo systemctl restart taskmaster
 EOF

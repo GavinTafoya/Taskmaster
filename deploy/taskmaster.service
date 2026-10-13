@@ -6,7 +6,7 @@ After=network.target
 User=ubuntu
 WorkingDirectory=/opt/taskmaster
 # Find the jar in the target directory and run it
-ExecStart=/bin/bash -c "java -jar target/*.jar"
+ExecStart=/bin/bash -c "java -jar *.jar"
 SuccessExitStatus=143
 Restart=always
 RestartSec=10
