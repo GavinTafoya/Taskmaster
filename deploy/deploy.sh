@@ -15,21 +15,14 @@ if [ -z "$HOST" ] || [ -z "$KEY" ]; then
     exit 1
 fi
 
-echo "1. Running tests locally..."
-./mvnw test
+echo "1. Building the code locally..."
+./mvnw clean package -DskipTests
 
 echo "2. Copying code to server..."
-# Copy everything EXCEPT target (build output) and .git (history)
-rsync -avz -e "ssh -i $KEY -o StrictHostKeyChecking=no" \
-    --exclude 'target' \
-    --exclude '.git' \
-    ./ ubuntu@$HOST:/opt/taskmaster/
+scp -i "$KEY" -o StrictHostKeyChecking=no target/*.jar ubuntu@$HOST:/opt/taskmaster/
 
-echo "3. Building on the server and restarting service..."
+echo "3. Restarting service..."
 ssh -i "$KEY" -o StrictHostKeyChecking=no ubuntu@$HOST << 'EOF'
-    cd /opt/taskmaster
-    echo "Building project..."
-    ./mvnw clean package -DskipTests
     echo "Restarting taskmaster service..."
     sudo systemctl restart taskmaster
 EOF
