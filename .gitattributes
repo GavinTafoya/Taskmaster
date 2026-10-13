@@ -2,3 +2,6 @@
 * text=auto
 *.sh text eol=lf
 mvnw text eol=lf
+deploy/*.sh text eol=lf
+deploy/*.conf text eol=lf
+deploy/*.service text eol=lf

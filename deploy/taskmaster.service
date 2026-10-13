@@ -1,0 +1,15 @@
+[Unit]
+Description=Taskmaster Java App
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/opt/taskmaster
+# Find the jar in the target directory and run it
+ExecStart=/bin/bash -c "java -jar target/*.jar"
+SuccessExitStatus=143
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
