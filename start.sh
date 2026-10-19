@@ -32,10 +32,7 @@ chmod +x ./mvnw
 
 
 #db check
-touch mydatabase.db
-if [ ! -f "mydatabase.db" ]; then
-    die "Database file mydatabase.db could not be created."
-fi
+pg_isready -q || echo "Warning: Local PostgreSQL not detected"
 
 #jar check
 JAR_FILE=$(ls target/*.jar 2>/dev/null | head -n 1)

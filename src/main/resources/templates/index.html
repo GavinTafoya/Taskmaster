@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Taskmaster - Home')}"></head>
+<body>
+    <!-- Inject Master Navbar -->
+    <div th:replace="~{fragments :: navbar}"></div>
+
+    <main class="container mt-5">
+
+        <div class="row align-items-md-stretch mt-4">
+            <div class="col-md-3">
+                <div class="h-100 p-5 text-bg-dark rounded-3 shadow-sm">
+                    <h2>User Tickets</h2>
+                    <hr>
+                    <th:block th:if="${username != null}">
+                        <p class="fs-5">Here are the tickets for <strong th:text="${username}">username</strong>:</p>
+                        <!-- Ticket list would go here -->
+                    </th:block>
+                    <th:block th:if="${username == null}">
+                        <p class="fs-5">Please <a th:href="@{/login}">login</a> to view your tickets.</p>
+                    </th:block>
+                </div>
+            </div>
+
+            
+            <!-- Deployment Info -->
+            <div class="col-md-9">
+                <div class="h-100 p-5 bg-body-tertiary border rounded-3 shadow-sm">
+                    <h2>User Board</h2>
+                    <hr>
+                    <div class="col-md-2">
+                        <h4>Wall</h4>
+                        <hr>
+                        <th:block th:if="${username != null}">
+                            <th:each="ticket : ${userTickets}">
+                                <p th:text="${ticket.title}" th:if="${ticket.status==0}">Ticket Title</p>
+                            </th:each>
+                        </th:block>
+                    </div>
+                    <div class="col-md-2">
+                        <h4>Backlog</h4>
+                        <hr>
+                        <th:block th:if="${username != null}">
+                            <th:each="ticket : ${userTickets}">
+                                <p th:text="${ticket.title}" th:if="${ticket.status==1}">Ticket Title</p>
+                            </th:each>
+                        </th:block>
+                    </div>
+                    <div class="col-md-2">
+                        <h4>In Progress</h4>
+                        <hr>
+                        <th:block th:if="${username != null}">
+                            <th:each="ticket : ${userTickets}">
+                                <p th:text="${ticket.title}" th:if="${ticket.status==2}">Ticket Title</p>
+                            </th:each>
+                        </th:block>
+                    </div>
+                    <div class="col-md-2">
+                        <h4>In Test</h4>
+                        <hr>
+                        <th:block th:if="${username != null}">
+                            <th:each="ticket : ${userTickets}">
+                                <p th:text="${ticket.title}" th:if="${ticket.status==3}">Ticket Title</p>
+                            </th:each>
+                        </th:block>
+                    </div>
+                    <div class="col-md-2">
+                        <h4>Approved</h4>
+                        <hr>
+                        <th:block th:if="${username != null}">
+                            <th:each="ticket : ${userTickets}">
+                                <p th:text="${ticket.title}" th:if="${ticket.status==4}">Ticket Title</p>
+                            </th:each>
+                        </th:block>
+                    </div>
+                    <div class="col-md-2">
+                        <h4>Done</h4>
+                        <hr>
+                        <th:block th:if="${username != null}">
+                            <th:each="ticket : ${userTickets}">
+                                <p th:text="${ticket.title}" th:if="${ticket.status==5}">Ticket Title</p>
+                            </th:each>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Inject Master Footer -->
+    <div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

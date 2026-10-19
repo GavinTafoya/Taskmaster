@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">Taskmaster</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Shared Navbar -->
+    <div th:fragment="navbar">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/">Taskmaster</a>
+                <a class="nav-link" href="/info">(i)</a>
+                <a class="nav-link" href="/createTicket">+ Ticket</a>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item" th:if="${username != null}">
+                            <!-- Fix: Remove || 'username' -->
+                            <a class="nav-link" href="/userPage" th:text="${username}">username</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="${username == null ? @{/login} : @{/logout}}" th:text="${username == null ? 'Login' : 'Logout'}">Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Shared Footer -->
+    <div th:fragment="footer" class="mt-5">
+        <footer class="bg-light text-center py-4 border-top">
+            <p class="mb-0 text-muted">Taskmaster &copy; 2026. All rights reserved.</p>
+            <!-- Bootstrap JS -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </footer>
+    </div>
+</body>
+</html>

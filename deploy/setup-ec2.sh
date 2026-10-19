@@ -2,13 +2,22 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-echo "Updating system and installing Java 17 & Nginx..."
+echo "Updating system and installing Java 17, Nginx, & PostgreSQL..."
 apt-get update
-apt-get install -y openjdk-17-jdk nginx
+apt-get install -y openjdk-17-jdk nginx postgresql postgresql-contrib
+
+echo "Configuring PostgreSQL Database..."
+systemctl enable postgresql
+systemctl start postgresql
+
+# Set the postgres user password to 'postgres' (matches your application.properties)
+sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
+
+# Create the 'taskmaster' database if it doesn't already exist
+sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname = 'taskmaster'" | grep -q 1 || sudo -u postgres psql -c "CREATE DATABASE taskmaster;"
 
 echo "Creating application directory..."
 mkdir -p /opt/taskmaster
-# Give the default ubuntu user ownership of the directory
 chown ubuntu:ubuntu /opt/taskmaster
 
 echo "Configuring Nginx..."

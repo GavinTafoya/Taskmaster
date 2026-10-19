@@ -13,9 +13,4 @@ public class TaskmasterApplication {
 		SpringApplication.run(TaskmasterApplication.class, args);
 	}
 
-	@GetMapping("/")
-	public String home() {
-		return "Welcome to Taskmaster!";
-	}
-
 }
