@@ -1,4 +1,4 @@
-bash start.sh
+#!/usr/bin/env bash
 die() {
     echo "ERROR: $1" >&2
     exit 1
