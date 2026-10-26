@@ -5,6 +5,7 @@ After=network.target
 [Service]
 User=ubuntu
 WorkingDirectory=/opt/taskmaster
+Environment="SPRING_PROFILES_ACTIVE=prod"
 # Find the jar in the target directory and run it
 ExecStart=/bin/bash -c "java -jar *.jar"
 SuccessExitStatus=143

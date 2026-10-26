@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Login - Taskmaster')}"></head>
+<body>
+    <div th:replace="~{fragments :: navbar}"></div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h3 class="mb-0">Login</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div th:if="${param.error}" class="alert alert-danger">
+                            Invalid username or password.
+                        </div>
+                        <div th:if="${param.success}" class="alert alert-success">
+                            Registration successful! Please log in.
+                        </div>
+                        <div th:if="${param.logout}" class="alert alert-info">
+                            You have been logged out.
+                        </div>
+
+                        <form th:action="@{/login}" method="post">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" id="username" name="username" class="form-control" required autofocus />
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" id="password" name="password" class="form-control" required />
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">Log In</button>
+                            </div>
+                        </form>
+                        <hr>
+                        <div class="text-center mt-3">
+                            <p>Don't have an account? <a th:href="@{/register}">Register here</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>

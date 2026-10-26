@@ -19,6 +19,7 @@ echo "1. Building the code locally..."
 ./mvnw clean package -DskipTests
 
 echo "2. Copying code to server..."
+ssh -i "$KEY" -o StrictHostKeyChecking=no ubuntu@$HOST "rm -f /opt/taskmaster/*.jar"
 scp -i "$KEY" -o StrictHostKeyChecking=no -o ServerAliveInterval=15 -o ServerAliveCountMax=3 target/*.jar ubuntu@$HOST:/opt/taskmaster/
 scp -i "$KEY" -o StrictHostKeyChecking=no -o ServerAliveInterval=15 -o ServerAliveCountMax=3 -r deploy ubuntu@$HOST:/opt/taskmaster/
 
@@ -36,7 +37,7 @@ sleep 15
 
 echo "5. Checking health..."
 # Modify this URL if you have a specific /api/health endpoint
-STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://$HOST/)
+STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://$HOST/login)
 
 if [ "$STATUS" = "200" ]; then
     echo "✅ Deploy successful! App is running at http://$HOST/"

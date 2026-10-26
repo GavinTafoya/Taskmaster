@@ -34,12 +34,22 @@ chmod +x ./mvnw
 #db check
 pg_isready -q || echo "Warning: Local PostgreSQL not detected"
 
+# Open SSH Tunnel to EC2 Database
+echo "Opening SSH tunnel to EC2 database..."
+# Use StrictHostKeyChecking=no to prevent it from hanging on yes/no prompts
+ssh -f -N -o StrictHostKeyChecking=no -i ./seckey.pem -L 5433:localhost:5432 ubuntu@32.185.224.45
+
+# Find the PID so we can kill it later
+TUNNEL_PID=$(pgrep -f "ssh -f -N -o StrictHostKeyChecking=no -i ./seckey.pem -L 5433:localhost:5432")
+
+# Setup a trap to kill the tunnel when the script exits
+trap "echo 'Closing SSH tunnel...'; kill $TUNNEL_PID 2>/dev/null" EXIT
+
+# Give the tunnel a brief moment to establish
+sleep 2
+
 #jar check
 JAR_FILE=$(ls target/*.jar 2>/dev/null | head -n 1)
-
-if [ -z "$JAR_FILE" ] || [ ! -f "$JAR_FILE" ]; then
-    die "Compiled JAR not found in target/. Build must have failed."
-fi
 
 echo ""
 echo "===================================================="

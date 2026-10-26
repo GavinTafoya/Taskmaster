@@ -2,9 +2,9 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-echo "Updating system and installing Java 17, Nginx, & PostgreSQL..."
+echo "Updating system and installing Java 25, Nginx, & PostgreSQL..."
 apt-get update
-apt-get install -y openjdk-17-jdk nginx postgresql postgresql-contrib
+apt-get install -y openjdk-25-jdk nginx postgresql postgresql-contrib
 
 echo "Configuring PostgreSQL Database..."
 systemctl enable postgresql
