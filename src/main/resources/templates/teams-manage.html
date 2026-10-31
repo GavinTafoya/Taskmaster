@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments.html :: head('Manage Teams - Taskmaster')"></head> 
+<body>
+    <div th:replace="fragments.html :: navbar"></div>
+
+    <div class="container mt-5">
+        <h1>Manage Teams</h1>
+        <div th:if="${param.success}" class="alert alert-success">Team created successfully!</div>
+        <div th:if="${param.invited}" class="alert alert-success">Member invited successfully!</div>
+        <div th:if="${param.error}" class="alert alert-danger" th:text="${param.error}"></div>
+
+        <div class="row mt-4">
+            <!-- Left Column: User's Current Teams -->
+            <div class="col-md-6">
+                <h4>My Teams</h4>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center" th:each="teamUser : ${userTeams}">
+                        <span th:text="${teamUser.team.name}">Team Name</span>
+                        <span th:if="${teamUser.isAdmin == 1}" class="badge bg-primary rounded-pill">Admin</span>
+                        <span th:if="${teamUser.isAdmin == 0}" class="badge bg-secondary rounded-pill">Member</span>
+                    </li>
+                </ul>
+                <div th:if="${#lists.isEmpty(userTeams)}" class="alert alert-info mt-2">
+                    You are not a member of any teams yet.
+                </div>
+            </div>
+
+            <!-- Right Column: Create / Invite Forms -->
+            <div class="col-md-6">
+                <!-- Create Team Form -->
+                <div class="card mb-4">
+                    <div class="card-header">Create a New Team</div>
+                    <div class="card-body">
+                        <form th:action="@{/teams/manage}" th:object="${teamDto}" method="post">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Team Name</label>
+                                <input type="text" class="form-control" id="name" th:field="*{name}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                            </div>
+                            <button type="submit" class="btn btn-success">Create Team</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Invite Member Form -->
+                <div class="card" th:if="${not #lists.isEmpty(userTeams)}">
+                    <div class="card-header">Invite Member to Team</div>
+                    <div class="card-body">
+                        <form th:action="@{/teams/manage/add-member}" th:object="${teamInviteDto}" method="post">
+                            
+                            <div class="mb-3">
+                                <label for="teamId" class="form-label">Select Team</label>
+                                <select class="form-select" id="teamId" th:field="*{teamId}">
+                                    <!-- Only show teams where the user is an admin -->
+                                    <option th:each="teamUser : ${userTeams}" 
+                                            th:if="${teamUser.isAdmin == 1}" 
+                                            th:value="${teamUser.team.id}" 
+                                            th:text="${teamUser.team.name}"></option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username to Invite</label>
+                                <input type="text" class="form-control" id="username" th:field="*{username}">
+                                <div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Invite Member</button>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments.html :: footer"></div>
+</body>
+</html>

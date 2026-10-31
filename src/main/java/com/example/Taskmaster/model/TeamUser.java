@@ -23,5 +23,5 @@ public class TeamUser {
     private User user;
 
     @Column(name = "is_admin")
-    private Integer isAdmin; // 1 or 0
+    private Integer isAdmin = 0; // 1 or 0
 }
