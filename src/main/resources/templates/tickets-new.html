@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Create Ticket - Taskmaster')}"></head>
+<body>
+    <div th:replace="~{fragments :: navbar}"></div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h3 class="mb-0">Create New Ticket</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <form th:action="@{/tickets/new}" th:object="${ticketDto}" method="post">
+                            
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" id="title" th:field="*{title}" class="form-control" 
+                                       th:classappend="${#fields.hasErrors('title')} ? 'is-invalid' : ''" />
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea id="description" th:field="*{description}" class="form-control"
+                                       th:classappend="${#fields.hasErrors('description')} ? 'is-invalid' : ''"></textarea>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="ticketTypeId" class="form-label">Type</label>
+                                <select id="ticketTypeId" th:field="*{ticketTypeId}" class="form-select"
+                                        th:classappend="${#fields.hasErrors('ticketTypeId')} ? 'is-invalid' : ''">
+                                    <option value="" selected="selected">Select a Type</option>
+                                    <option th:each="type : ${ticketTypes}" th:value="${type.id}" th:text="${type.name}"></option>
+                                </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('ticketTypeId')}" th:errors="*{ticketTypeId}"></div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="teamId" class="form-label">Team</label>
+                                <select id="teamId" th:field="*{teamId}" class="form-select"
+                                        th:classappend="${#fields.hasErrors('teamId')} ? 'is-invalid' : ''">
+                                    <option value="" selected="selected">Select a Team</option>
+                                    <option th:each="team : ${teams}" th:value="${team.id}" th:text="${team.name}"></option>
+                                </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('teamId')}" th:errors="*{teamId}"></div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="assigneeId" class="form-label">Assignee</label>
+                                <select id="assigneeId" th:field="*{assigneeId}" class="form-select"
+                                        th:classappend="${#fields.hasErrors('assigneeId')} ? 'is-invalid' : ''">
+                                    <option value="" selected="selected">Select an Assignee</option>
+                                    <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
+                                </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('assigneeId')}" th:errors="*{assigneeId}"></div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="reviewerId" class="form-label">Reviewer</label>
+                                <select id="reviewerId" th:field="*{reviewerId}" class="form-select"
+                                        th:classappend="${#fields.hasErrors('reviewerId')} ? 'is-invalid' : ''">
+                                    <option value="" selected="selected">Select a Reviewer</option>
+                                    <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.username}"></option>
+                                </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('reviewerId')}" th:errors="*{reviewerId}"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="dueDate" class="form-label">Due Date</label>
+                                <input type="date" id="dueDate" th:field="*{dueDate}" class="form-control"
+                                       th:classappend="${#fields.hasErrors('dueDate')} ? 'is-invalid' : ''">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('dueDate')}" th:errors="*{dueDate}"></div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-success">Create</button>
+                            </div>
+                        </form>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div th:replace="~{fragments :: footer}"></div>
+</body>
+</html>
